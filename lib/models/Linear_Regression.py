@@ -1,3 +1,5 @@
+import numpy as np
+
 class Linear_Regression():
     '''
     Linear regression using ordinary least squares\
@@ -9,8 +11,6 @@ class Linear_Regression():
 
 
     def fit(self, X=None, y=None, reg=False, alpha=None, dg_fr=None):
-        import numpy as np
-
         '''
         Creates a line of best fit for the data using linear regression.
 
@@ -19,11 +19,11 @@ class Linear_Regression():
             X: Data
             y: target
             reg: regularization
-            alpha:
+            alpha: regularization strength
             dg_fr: degrees of freedomm
         '''
 
-        X, y = data_check(X,y)
+        X, y = self.data_check(X,y)
 
         ones = np.ones(X.shape[0])
         X_ = np.column_stack((ones, X))
@@ -36,13 +36,18 @@ class Linear_Regression():
                 print('In order to use the alpha parameter\
                 regularization must be set to TRUE')
 
-            if deg_freedom != None:
+            if dg_fr != None:
                 print('In order to use the degrees of freedom parameter\
                  regularization must be set to TRUE')
 
         if reg == True:
-            inverse = np.linalg.inv()
-            self.betas = inverse(X_.T.dot(X_) + alpha * np.eye(deg).dot(X_.T).dot(y)
+
+            if alpha == None:
+                raise ValueError('Please select a value for alpha')
+
+            dg_fr = X_.shape[1]
+            inverse = np.linalg.inv
+            self.betas = inverse(X_.T.dot(X_) + alpha * np.eye(dg_fr)).dot(X_.T).dot(y)
 
         return self.betas
 
@@ -51,6 +56,8 @@ class Linear_Regression():
         '''
         Returns R2 score.
         '''
+
+        X, y = self.data_check(X,y)
 
         y_pred = self.betas[0] + X.dot(self.betas[1:])
 
@@ -62,26 +69,26 @@ class Linear_Regression():
         return R2
 
 
-    def data_check(X,y):
+    def data_check(self, X,y):
 
         '''
         Converts data to a numpy ndarray.
         '''
 
-        Xc == X.copy
-        yc == y.copy
-
-        if type(Xc) != np.ndarray:
+        if type(X) != np.ndarray:
             try:
-                Xc = np.array(Xc)
-                print(type(Xc))
+                X = np.array(X)
+        
             except:
                 raise Exception('Failed to convert data to np.ndarray')
-        if type(yc) != np.ndarray:
+        if type(y) != np.ndarray:
             try:
-                yc = np.array(yc)
-                print(type(yc))
+                y = np.array(y)
+              
             except:
                 raise Exception('Failed to convert target to np.ndarray')
 
-        return Xc, yc
+        return X, y
+
+
+
