@@ -3,6 +3,8 @@ import numpy as np
 class KNN():
 
     def __init__(self, neighbors=1, distance_metric='minkowski', p=2):
+        ''' K-Nearest_Neighbors Classifier'''
+
         self.n = neighbors
         self.metric = distance_metric
         self.p = p
@@ -34,15 +36,13 @@ class KNN():
         distance = self.find_distance(X)
     
         min_dist_index = [distance[i].argsort()[0:self.n] for i in range(distance.shape[0])]
-#       dist_index_array = np.array(min_dist_index)
         nbr_trg = [self.y_fit[min_dist_index[i]] for i in range(len(min_dist_index))]
-#       nbr_trg_array = np.array(nbr_trg)
-    
+
         pred =[]
         for i in range(len(nbr_trg)):
-            trg_freq, trg_id = np.unique(nbr_trg[i], return_counts=True)
+            trg_id, trg_freq = np.unique(nbr_trg[i], return_counts=True)
             pred_index = trg_freq.argsort()[-1]
-            pred.append(trg_freq[pred_index])
+            pred.append(trg_id[pred_index])
     
         pred = np.array(pred)
         return pred
@@ -66,7 +66,6 @@ class KNN():
         return (correct / (correct + incorrect)) * 100
 
     def data_check(self, X,y):
-
         '''
         Converts data to a numpy ndarray.
         '''

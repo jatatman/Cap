@@ -2,8 +2,7 @@ import numpy as np
 
 class Linear_Regression():
     '''
-    Linear regression using ordinary least squares\
-    to determine the distance between points.
+    Linear regression using ordinary least squares to determine the distance between points.
     '''
 
     def __init__(self):
@@ -11,8 +10,7 @@ class Linear_Regression():
 
 
     def fit(self, X=None, y=None, reg=False, alpha=None, dg_fr=None):
-        '''
-        Creates a line of best fit for the data using linear regression.
+        '''Creates a line of best fit for the data using linear regression.
 
         Parameters:
 
